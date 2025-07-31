@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "relMundial": "World Clock",
+  "alarmes": "Alarms",
+  "timer": "Timer",
+  "cronometro": "Stopwatch",
+  "settings": "Settings",
+  "theme": "Theme",
+  "language": "Language",
+  "appTitulo": "Flutter Clock"
+}

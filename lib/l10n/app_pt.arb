@@ -1,0 +1,12 @@
+{
+  "@@locale": "pt",
+  "relMundial": "Relógio Mundial",
+  "alarmes": "Alarmes",
+  "timer": "Timer",
+  "cronometro": "Cronômetro",
+  "settings": "Configurações",
+  "theme": "Tema",
+  "language": "Idioma",
+  "appTitulo": "Relógio Flutter"
+  
+}
