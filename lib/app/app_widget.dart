@@ -65,9 +65,7 @@ class _AppWidgetState extends State<AppWidget> {
           ),
         );
 
-      // Se quiser pode colocar um default, mas não obrigatório pois cobriu todos os casos
-      // default:
-      //   return ThemeData.dark(useMaterial3: true);
+      
     }
   }
 
