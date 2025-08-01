@@ -185,19 +185,19 @@ abstract class AppLocalizations {
   /// No description provided for @timerFinalizado.
   ///
   /// In en, this message translates to:
-  /// **'Timer finished!'**
+  /// **'Timer completed!'**
   String get timerFinalizado;
 
   /// No description provided for @tempoTerminado.
   ///
   /// In en, this message translates to:
-  /// **'Time is up.'**
+  /// **'Time\'s up.'**
   String get tempoTerminado;
 
   /// No description provided for @desligar.
   ///
   /// In en, this message translates to:
-  /// **'Turn off'**
+  /// **'Stop'**
   String get desligar;
 
   /// No description provided for @reiniciar.
@@ -233,7 +233,7 @@ abstract class AppLocalizations {
   /// No description provided for @tempoMaiorZero.
   ///
   /// In en, this message translates to:
-  /// **'Please select a time greater than zero'**
+  /// **'Choose a time greater than zero'**
   String get tempoMaiorZero;
 
   /// No description provided for @editarAlarme.
@@ -247,6 +247,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time'**
   String get horario;
+
+  /// No description provided for @portuguese.
+  ///
+  /// In en, this message translates to:
+  /// **'Portuguese'**
+  String get portuguese;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @temaClassicoDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic Dark'**
+  String get temaClassicoDark;
+
+  /// No description provided for @temaClaro.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Theme'**
+  String get temaClaro;
 }
 
 class _AppLocalizationsDelegate

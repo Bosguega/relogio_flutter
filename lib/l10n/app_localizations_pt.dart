@@ -82,4 +82,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get horario => 'Horário';
+
+  @override
+  String get portuguese => 'Português';
+
+  @override
+  String get english => 'Inglês';
+
+  @override
+  String get temaClassicoDark => 'Clássico Dark';
+
+  @override
+  String get temaClaro => 'Tema Claro';
 }

@@ -51,13 +51,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelar => 'Cancel';
 
   @override
-  String get timerFinalizado => 'Timer finished!';
+  String get timerFinalizado => 'Timer completed!';
 
   @override
-  String get tempoTerminado => 'Time is up.';
+  String get tempoTerminado => 'Time\'s up.';
 
   @override
-  String get desligar => 'Turn off';
+  String get desligar => 'Stop';
 
   @override
   String get reiniciar => 'Restart';
@@ -75,11 +75,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iniciar => 'Start';
 
   @override
-  String get tempoMaiorZero => 'Please select a time greater than zero';
+  String get tempoMaiorZero => 'Choose a time greater than zero';
 
   @override
   String get editarAlarme => 'Edit Alarm';
 
   @override
   String get horario => 'Time';
+
+  @override
+  String get portuguese => 'Portuguese';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get temaClassicoDark => 'Classic Dark';
+
+  @override
+  String get temaClaro => 'Light Theme';
 }

@@ -49,5 +49,14 @@
   "editarAlarme": "Editar Alarme",
   "@editarAlarme": {},
   "horario": "Horário",
-  "@horario": {}
+  "@horario": {},
+
+  "portuguese": "Português",
+  "@portuguese": {},
+  "english": "Inglês",
+  "@english": {},
+  "temaClassicoDark": "Clássico Dark",
+  "@temaClassicoDark": {},
+  "temaClaro": "Tema Claro",
+  "@temaClaro": {}
 }
