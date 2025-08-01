@@ -7,6 +7,7 @@ import 'app/theme/theme_provider.dart';
 import 'app/theme/app_theme_enum.dart';
 import 'l10n/app_localizations.dart';
 import 'app/app_widget.dart';
+import 'package:relogio_flutter/features/alarmes/logic/alarmes_provider.dart'; // Seu caminho informado
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +24,15 @@ Future<void> main() async {
   );
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider.fromName(savedTheme.name),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider.fromName(savedTheme.name),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AlarmesProvider()..carregarAlarmes(),
+        ),
+      ],
       child: AppRoot(
         initialLocale: Locale(savedLanguageCode),
       ),

@@ -1,109 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:relogio_flutter/data/models/alarme_model.dart';
-import 'editar_alarme_screen.dart'; // Importe a tela de edição (criada à parte)
+import 'package:relogio_flutter/features/alarmes/logic/alarmes_provider.dart';
+import 'package:relogio_flutter/l10n/app_localizations.dart';
+import 'editar_alarme_screen.dart';
 
-class AlarmesScreen extends StatefulWidget {
+class AlarmesScreen extends StatelessWidget {
   const AlarmesScreen({super.key});
 
   @override
-  State<AlarmesScreen> createState() => _AlarmesScreenState();
-}
-
-class _AlarmesScreenState extends State<AlarmesScreen> {
-  List<AlarmeModel> alarmes = [];
-
-  @override
   Widget build(BuildContext context) {
-    // Ordena os alarmes pela hora (minutos desde meia-noite)
-    alarmes.sort((a, b) {
-      final aMin = a.hora.hour * 60 + a.hora.minute;
-      final bMin = b.hora.hour * 60 + b.hora.minute;
-      return aMin.compareTo(bMin);
-    });
+    final t = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final alarmesProvider = context.watch<AlarmesProvider>();
+    final alarmes = alarmesProvider.alarmes;
 
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Alarmes'),
-        backgroundColor: Colors.black,
+        title: Text(t.alarmes),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add, size: 28),
-            onPressed: _adicionarAlarme,
+            icon: const Icon(Icons.add),
+            tooltip: t.adicionar,
+            onPressed: () => _adicionarAlarme(context),
           ),
         ],
       ),
       body: alarmes.isEmpty
-          ? const Center(
-              child: Text(
-                'Nenhum alarme configurado',
-                style: TextStyle(color: Colors.white70, fontSize: 18),
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  t.nenhumAlarme,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
             )
           : ListView.separated(
               itemCount: alarmes.length,
-              separatorBuilder: (_, __) =>
-                  const Divider(color: Colors.grey, height: 1),
+              separatorBuilder: (_, __) => Divider(
+                color: scheme.outlineVariant,
+                height: 1,
+              ),
               itemBuilder: (context, index) {
                 final alarme = alarmes[index];
-                final horaFormatada = _formatarHora(alarme.hora);
+                final horaFormatada = alarme.hora.format(context);
 
-                return Card(
-                  color: Colors.grey[900],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                return Dismissible(
+                  key: ValueKey(alarme.id),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    color: scheme.errorContainer,
+                    child: Icon(Icons.delete, color: scheme.onErrorContainer),
                   ),
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: ListTile(
-                    title: Text(
-                      horaFormatada,
-                      style:
-                          const TextStyle(fontSize: 28, color: Colors.white),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Switch(
-                          value: alarme.ativo,
-                          activeColor: Colors.tealAccent.shade400,
-                          onChanged: (valor) {
-                            setState(() {
-                              alarme.ativo = valor;
-                            });
-                          },
+                  onDismissed: (_) => _excluirAlarme(context, alarme),
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: ListTile(
+                      title: Text(
+                        horaFormatada,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
                         ),
-                        PopupMenuButton<String>(
-                          icon: const Icon(Icons.more_vert, color: Colors.white),
-                          onSelected: (value) async {
-                            if (value == 'editar') {
-                              final alarmeEditado = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => EditarAlarmeScreen(
-                                    alarme: alarme,
-                                  ),
-                                ),
-                              );
-                              if (alarmeEditado != null) {
-                                setState(() {
-                                  alarmes[index] = alarmeEditado;
-                                });
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Switch(
+                            value: alarme.ativo,
+                            onChanged: (valor) {
+                              final atualizado = alarme.copyWith(ativo: valor);
+                              context.read<AlarmesProvider>().editar(atualizado);
+                            },
+                          ),
+                          PopupMenuButton<String>(
+                            onSelected: (value) {
+                              if (value == 'editar') {
+                                _editarAlarme(context, alarme);
+                              } else if (value == 'excluir') {
+                                _excluirAlarme(context, alarme);
                               }
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(
-                              value: 'editar',
-                              child: Text('Editar'),
-                            ),
-                          ],
-                        ),
-                      ],
+                            },
+                            itemBuilder: (context) => [
+                              PopupMenuItem(
+                                value: 'editar',
+                                child: Text(t.editar),
+                              ),
+                              PopupMenuItem(
+                                value: 'excluir',
+                                child: Text(t.excluir),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      onTap: () => _editarAlarme(context, alarme),
                     ),
-                    onTap: () {
-                      // Pode abrir edição também se quiser
-                    },
                   ),
                 );
               },
@@ -111,34 +109,47 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
     );
   }
 
-  String _formatarHora(TimeOfDay hora) {
-    final hour = hora.hour.toString().padLeft(2, '0');
-    final minute = hora.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
-  }
-
-  Future<void> _adicionarAlarme() async {
+  Future<void> _adicionarAlarme(BuildContext context) async {
+    final t = AppLocalizations.of(context)!;
     final novaHora = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: ColorScheme.dark(
-            primary: Colors.tealAccent.shade400,
-            onSurface: Colors.white,
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(foregroundColor: Colors.tealAccent),
-          ),
-        ),
-        child: child!,
-      ),
+      helpText: t.selecioneHora,
     );
 
     if (novaHora != null) {
-      setState(() {
-        alarmes.add(AlarmeModel(hora: novaHora));
-      });
+      final novo = AlarmeModel.novo(hora: novaHora);
+      await context.read<AlarmesProvider>().adicionar(novo);
     }
+  }
+
+  Future<void> _editarAlarme(BuildContext context, AlarmeModel alarme) async {
+    final editado = await Navigator.push<AlarmeModel?>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditarAlarmeScreen(alarme: alarme),
+      ),
+    );
+
+    if (editado != null) {
+      await context.read<AlarmesProvider>().editar(editado);
+    }
+  }
+
+  Future<void> _excluirAlarme(BuildContext context, AlarmeModel alarme) async {
+    final t = AppLocalizations.of(context)!;
+    await context.read<AlarmesProvider>().remover(alarme.id);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(t.alarmExcluido),
+        action: SnackBarAction(
+          label: t.desfazer ?? 'Desfazer',
+          onPressed: () async {
+            await context.read<AlarmesProvider>().adicionar(alarme);
+          },
+        ),
+      ),
+    );
   }
 }

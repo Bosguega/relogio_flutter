@@ -187,7 +187,7 @@ class _TimerScreenState extends State<TimerScreen> {
                       fontSize: isSelected ? 36 : 24,
                       color: isSelected
                           ? Colors.tealAccent.shade400
-                          : Colors.white.withOpacity(0.3),
+                          : Colors.white.withAlpha(77), // 0.3 * 255 ≈ 77
                       fontWeight:
                           isSelected ? FontWeight.bold : FontWeight.normal,
                       shadows: isSelected

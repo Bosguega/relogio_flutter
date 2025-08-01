@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/alarme_model.dart';
-import 'widgets/dias_da_semana_seletor.dart';
+import 'package:relogio_flutter/data/models/alarme_model.dart';
 import 'package:relogio_flutter/l10n/app_localizations.dart';
+import 'widgets/dias_da_semana_seletor.dart';
 
 class EditarAlarmeScreen extends StatefulWidget {
   final AlarmeModel alarme;
@@ -20,13 +20,15 @@ class _EditarAlarmeScreenState extends State<EditarAlarmeScreen> {
   void initState() {
     super.initState();
     _hora = widget.alarme.hora;
-    _diasSelecionados = List.from(widget.alarme.diasSelecionados);
+    _diasSelecionados = List<int>.from(widget.alarme.diasSelecionados);
   }
 
-  void _selecionarHora() async {
+  Future<void> _selecionarHora() async {
+    final t = AppLocalizations.of(context)!;
     final novaHora = await showTimePicker(
       context: context,
       initialTime: _hora,
+      helpText: t.selecioneHora,
     );
     if (novaHora != null) {
       setState(() => _hora = novaHora);
@@ -34,18 +36,19 @@ class _EditarAlarmeScreenState extends State<EditarAlarmeScreen> {
   }
 
   void _salvar() {
-    _diasSelecionados.sort();
-    final novoAlarme = AlarmeModel(
+    final dias = List<int>.from(_diasSelecionados)..sort();
+    final atualizado = widget.alarme.copyWith(
       hora: _hora,
-      ativo: widget.alarme.ativo,
-      diasSelecionados: _diasSelecionados,
+      diasSelecionados: dias,
     );
-    Navigator.pop(context, novoAlarme);
+    Navigator.pop(context, atualizado);
   }
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -53,31 +56,44 @@ class _EditarAlarmeScreenState extends State<EditarAlarmeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
+            tooltip: t.salvar,
             onPressed: _salvar,
           ),
         ],
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(t.horario),
-              subtitle: Text(_hora.format(context)),
+        children: [
+          Card(
+            child: ListTile(
+              title: Text(t.horario, style: theme.textTheme.titleMedium),
+              subtitle: Text(
+                _hora.format(context),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
               trailing: const Icon(Icons.access_time),
               onTap: _selecionarHora,
             ),
-            const SizedBox(height: 24),
-            DiasDaSemanaSeletor(
-              diasSelecionados: _diasSelecionados,
-              onSelecionado: (dias) {
-                setState(() {
-                  _diasSelecionados = dias;
-                });
-              },
+          ),
+          const SizedBox(height: 16),
+          Text(t.repetir, style: theme.textTheme.titleMedium),
+          const SizedBox(height: 8),
+          DiasDaSemanaSeletor(
+            diasSelecionados: _diasSelecionados,
+            onSelecionado: (dias) => setState(() => _diasSelecionados = dias),
+          ),
+          if (_diasSelecionados.isEmpty) ...[
+            const SizedBox(height: 12),
+            Text(
+              t.repeticaoVaziaUmaVez,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
             ),
           ],
-        ),
+        ],
       ),
     );
   }

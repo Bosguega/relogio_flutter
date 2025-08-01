@@ -94,4 +94,35 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get temaClaro => 'Tema Claro';
+
+  @override
+  String get adicionar => 'Adicionar';
+
+  @override
+  String get editar => 'Editar';
+
+  @override
+  String get excluir => 'Excluir';
+
+  @override
+  String get selecioneHora => 'Selecione a hora do alarme';
+
+  @override
+  String get nenhumAlarme =>
+      'Nenhum alarme cadastrado.\nToque no botão + para adicionar.';
+
+  @override
+  String get alarmExcluido => 'Alarme excluído';
+
+  @override
+  String get desfazer => 'Desfazer';
+
+  @override
+  String get repeticaoVaziaUmaVez => 'Uma vez';
+
+  @override
+  String get repetir => 'Repetir';
+
+  @override
+  String get salvar => 'Salvar';
 }

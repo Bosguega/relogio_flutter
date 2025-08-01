@@ -45,19 +45,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pausar => 'Pause';
 
   @override
-  String get continuar => 'Resume';
+  String get continuar => 'Continue';
 
   @override
   String get cancelar => 'Cancel';
 
   @override
-  String get timerFinalizado => 'Timer completed!';
+  String get timerFinalizado => 'Timer finished!';
 
   @override
-  String get tempoTerminado => 'Time\'s up.';
+  String get tempoTerminado => 'Time is up.';
 
   @override
-  String get desligar => 'Stop';
+  String get desligar => 'Turn off';
 
   @override
   String get reiniciar => 'Restart';
@@ -94,4 +94,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get temaClaro => 'Light Theme';
+
+  @override
+  String get adicionar => 'Add';
+
+  @override
+  String get editar => 'Edit';
+
+  @override
+  String get excluir => 'Delete';
+
+  @override
+  String get selecioneHora => 'Select alarm time';
+
+  @override
+  String get nenhumAlarme => 'No alarms set.\nTap the + button to add one.';
+
+  @override
+  String get alarmExcluido => 'Alarm deleted';
+
+  @override
+  String get desfazer => 'Undo';
+
+  @override
+  String get repeticaoVaziaUmaVez => 'Once';
+
+  @override
+  String get repetir => 'Repeat';
+
+  @override
+  String get salvar => 'Save';
 }

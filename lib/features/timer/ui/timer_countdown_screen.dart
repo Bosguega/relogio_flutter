@@ -47,8 +47,10 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
   void _startTimer() {
     setState(() => _isRunning = true);
 
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingDuration.inSeconds == 0) {
+      if (!mounted) return;
+      if (_remainingDuration.inSeconds <= 0) {
         _timer?.cancel();
         _onTimerFinished();
       } else {
@@ -93,7 +95,7 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
     _timer?.cancel();
     await _stopSound();
     if (mounted) {
-      Navigator.of(context).pop(); // volta para TimerScreen
+      Navigator.of(context).pop();
     }
   }
 
@@ -104,6 +106,8 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
 
   void _showTimerFinishedDialog() {
     final t = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
 
     showDialog(
       context: context,
@@ -116,15 +120,15 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop(); // Fecha o alerta
-                await Future.delayed(const Duration(milliseconds: 300));
-                await _cancelarETerminar(); // Simula "Cancelar"
+                Navigator.of(context).pop();
+                await Future.delayed(const Duration(milliseconds: 200));
+                await _cancelarETerminar();
               },
               child: Text(t.desligar),
             ),
-            TextButton(
+            FilledButton.tonal(
               onPressed: () {
-                Navigator.of(context).pop(); // Fecha o alerta
+                Navigator.of(context).pop();
                 setState(() {
                   _remainingDuration = Duration(
                     hours: widget.hours,
@@ -153,6 +157,8 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
 
     final totalSeconds =
         widget.hours * 3600 + widget.minutes * 60 + widget.seconds;
@@ -161,102 +167,94 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
         : 0.0;
 
     final endTime = DateTime.now().add(_remainingDuration);
+    final endTimeStr =
+        '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}';
 
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(t.timer),
-        backgroundColor: Colors.black,
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                '${t.tempoEscolhido}: ${_formatDuration(Duration(
-                  hours: widget.hours,
-                  minutes: widget.minutes,
-                  seconds: widget.seconds,
-                ))}',
-                style: const TextStyle(color: Colors.white70, fontSize: 18),
+                '${t.tempoEscolhido}: ${_formatDuration(Duration(hours: widget.hours, minutes: widget.minutes, seconds: widget.seconds))}',
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 32),
               Stack(
                 alignment: Alignment.center,
                 children: [
                   SizedBox(
-                    width: 200,
-                    height: 200,
+                    width: 260,
+                    height: 260,
                     child: CircularProgressIndicator(
                       value: progress,
-                      strokeWidth: 12,
-                      color: Colors.tealAccent.shade400,
-                      backgroundColor: Colors.white24,
+                      strokeWidth: 14,
+                      color: scheme.primary,
+                      backgroundColor: scheme.surfaceContainerHighest,
                     ),
                   ),
                   Text(
                     _formatDuration(_remainingDuration),
-                    style: const TextStyle(
-                      color: Colors.tealAccent,
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 8,
-                          color: Colors.tealAccent,
-                          offset: Offset(0, 0),
-                        ),
-                      ],
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      color: scheme.primary,
+                      fontWeight: FontWeight.w700,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               Text(
-                '${t.horaProvavelTermino}: ${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}',
-                style: const TextStyle(color: Colors.white54, fontSize: 16),
+                '${t.horaProvavelTermino}: $endTimeStr',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 48),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      _isRunning ? _pauseTimer() : _resumeTimer();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.tealAccent.shade400,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: () {
+                        _isRunning ? _pauseTimer() : _resumeTimer();
+                      },
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                    ),
-                    child: Text(
-                      _isRunning ? t.pausar : t.continuar,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      child: Text(
+                        _isRunning ? t.pausar : t.continuar,
+                        style: const TextStyle(fontSize: 18),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 24),
-                  ElevatedButton(
-                    onPressed: _cancelarETerminar,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: _cancelarETerminar,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: scheme.error,
+                        side: BorderSide(color: scheme.error),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                    ),
-                    child: Text(
-                      t.cancelar,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      child: Text(
+                        t.cancelar,
+                        style: const TextStyle(fontSize: 18),
+                      ),
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

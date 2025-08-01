@@ -173,7 +173,7 @@ abstract class AppLocalizations {
   /// No description provided for @continuar.
   ///
   /// In en, this message translates to:
-  /// **'Resume'**
+  /// **'Continue'**
   String get continuar;
 
   /// No description provided for @cancelar.
@@ -185,19 +185,19 @@ abstract class AppLocalizations {
   /// No description provided for @timerFinalizado.
   ///
   /// In en, this message translates to:
-  /// **'Timer completed!'**
+  /// **'Timer finished!'**
   String get timerFinalizado;
 
   /// No description provided for @tempoTerminado.
   ///
   /// In en, this message translates to:
-  /// **'Time\'s up.'**
+  /// **'Time is up.'**
   String get tempoTerminado;
 
   /// No description provided for @desligar.
   ///
   /// In en, this message translates to:
-  /// **'Stop'**
+  /// **'Turn off'**
   String get desligar;
 
   /// No description provided for @reiniciar.
@@ -271,6 +271,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Light Theme'**
   String get temaClaro;
+
+  /// No description provided for @adicionar.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get adicionar;
+
+  /// No description provided for @editar.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editar;
+
+  /// No description provided for @excluir.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get excluir;
+
+  /// No description provided for @selecioneHora.
+  ///
+  /// In en, this message translates to:
+  /// **'Select alarm time'**
+  String get selecioneHora;
+
+  /// No description provided for @nenhumAlarme.
+  ///
+  /// In en, this message translates to:
+  /// **'No alarms set.\nTap the + button to add one.'**
+  String get nenhumAlarme;
+
+  /// No description provided for @alarmExcluido.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm deleted'**
+  String get alarmExcluido;
+
+  /// No description provided for @desfazer.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get desfazer;
+
+  /// No description provided for @repeticaoVaziaUmaVez.
+  ///
+  /// In en, this message translates to:
+  /// **'Once'**
+  String get repeticaoVaziaUmaVez;
+
+  /// No description provided for @repetir.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get repetir;
+
+  /// No description provided for @salvar.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get salvar;
 }
 
 class _AppLocalizationsDelegate
