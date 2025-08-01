@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relogio_flutter/l10n/app_localizations.dart';
 import 'timer_countdown_screen.dart';
 
 class TimerScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _TimerScreenState extends State<TimerScreen> {
   }
 
   void _initControllers() {
-    final centerIndex = itemCount ~/ 2 -20;
+    final centerIndex = itemCount ~/ 2 - 20;
     _hourController = FixedExtentScrollController(initialItem: centerIndex);
     _minuteController = FixedExtentScrollController(initialItem: centerIndex);
     _secondController = FixedExtentScrollController(initialItem: centerIndex);
@@ -37,9 +38,9 @@ class _TimerScreenState extends State<TimerScreen> {
     _hourController.dispose();
     _minuteController.dispose();
     _secondController.dispose();
-    
+
     _initControllers();
-    
+
     setState(() {
       selectedHour = 0;
       selectedMinute = 0;
@@ -61,15 +62,17 @@ class _TimerScreenState extends State<TimerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
           children: [
             const SizedBox(height: 32),
-            const Text(
-              'Timer',
-              style: TextStyle(
+            Text(
+              t.timer,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -80,21 +83,21 @@ class _TimerScreenState extends State<TimerScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 buildPicker(
-                  label: 'Horas',
+                  label: t.horas,
                   controller: _hourController,
                   onChanged: (i) {
                     setState(() => selectedHour = i % valuesPerUnit);
                   },
                 ),
                 buildPicker(
-                  label: 'Min',
+                  label: t.min,
                   controller: _minuteController,
                   onChanged: (i) {
                     setState(() => selectedMinute = i % valuesPerUnit);
                   },
                 ),
                 buildPicker(
-                  label: 'Seg',
+                  label: t.seg,
                   controller: _secondController,
                   onChanged: (i) {
                     setState(() => selectedSecond = i % valuesPerUnit);
@@ -104,43 +107,41 @@ class _TimerScreenState extends State<TimerScreen> {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              // No botão Iniciar da TimerScreen, mude para:
-onPressed: () {
-  final totalSeconds = selectedHour * 3600 +
-      selectedMinute * 60 +
-      selectedSecond;
-  if (totalSeconds == 0) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Escolha um tempo maior que zero')),
-    );
-    return;
-  }
+              onPressed: () {
+                final totalSeconds = _calculateTotalSeconds();
+                if (totalSeconds == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(t.tempoMaiorZero)),
+                  );
+                  return;
+                }
 
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => TimerCountdownScreen(
-        hours: selectedHour,
-        minutes: selectedMinute,
-        seconds: selectedSecond,
-      ),
-    ),
-  ).then((resultado) {
-    // Sempre resete o estado, independentemente do resultado
-    _resetState();
-  });
-},
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => TimerCountdownScreen(
+                      hours: selectedHour,
+                      minutes: selectedMinute,
+                      seconds: selectedSecond,
+                    ),
+                  ),
+                ).then((_) {
+                  _resetState();
+                });
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.tealAccent.shade400,
                 foregroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Iniciar',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              child: Text(
+                t.iniciar,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -157,11 +158,11 @@ onPressed: () {
     return Column(
       children: [
         Text(
-          label, 
+          label,
           style: const TextStyle(
             color: Colors.white70,
             fontSize: 16,
-          )
+          ),
         ),
         const SizedBox(height: 8),
         SizedBox(
@@ -187,7 +188,8 @@ onPressed: () {
                       color: isSelected
                           ? Colors.tealAccent.shade400
                           : Colors.white.withOpacity(0.3),
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
                       shadows: isSelected
                           ? [
                               Shadow(

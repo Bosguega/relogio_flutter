@@ -30,5 +30,56 @@ class AppLocalizationsPt extends AppLocalizations {
   String get language => 'Idioma';
 
   @override
+  String get relogio => 'Relógio';
+
+  @override
   String get appTitulo => 'Relógio Flutter';
+
+  @override
+  String get tempoEscolhido => 'Tempo escolhido';
+
+  @override
+  String get horaProvavelTermino => 'Hora provável do término';
+
+  @override
+  String get pausar => 'Pausar';
+
+  @override
+  String get continuar => 'Continuar';
+
+  @override
+  String get cancelar => 'Cancelar';
+
+  @override
+  String get timerFinalizado => 'Timer finalizado!';
+
+  @override
+  String get tempoTerminado => 'O tempo terminou.';
+
+  @override
+  String get desligar => 'Desligar';
+
+  @override
+  String get reiniciar => 'Reiniciar';
+
+  @override
+  String get horas => 'Horas';
+
+  @override
+  String get min => 'Min';
+
+  @override
+  String get seg => 'Seg';
+
+  @override
+  String get iniciar => 'Iniciar';
+
+  @override
+  String get tempoMaiorZero => 'Escolha um tempo maior que zero';
+
+  @override
+  String get editarAlarme => 'Editar Alarme';
+
+  @override
+  String get horario => 'Horário';
 }

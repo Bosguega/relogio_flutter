@@ -4,7 +4,6 @@ import 'package:relogio_flutter/data/models/relogio_model.dart';
 import 'package:relogio_flutter/data/providers/relogio_selecionado.dart';
 import 'package:relogio_flutter/features/relogio_mundial/data/relogios_disponiveis.dart';
 import 'package:relogio_flutter/features/relogio_mundial/ui/relogio_fullscreen.dart';
-import 'package:intl/intl_standalone.dart';
 
 class RelogioMundialScreen extends StatefulWidget {
   const RelogioMundialScreen({super.key});

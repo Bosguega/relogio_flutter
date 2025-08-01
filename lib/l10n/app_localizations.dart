@@ -140,11 +140,113 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get language;
 
+  /// No description provided for @relogio.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock'**
+  String get relogio;
+
   /// No description provided for @appTitulo.
   ///
   /// In en, this message translates to:
   /// **'Flutter Clock'**
   String get appTitulo;
+
+  /// No description provided for @tempoEscolhido.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected time'**
+  String get tempoEscolhido;
+
+  /// No description provided for @horaProvavelTermino.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated end time'**
+  String get horaProvavelTermino;
+
+  /// No description provided for @pausar.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pausar;
+
+  /// No description provided for @continuar.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get continuar;
+
+  /// No description provided for @cancelar.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelar;
+
+  /// No description provided for @timerFinalizado.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer finished!'**
+  String get timerFinalizado;
+
+  /// No description provided for @tempoTerminado.
+  ///
+  /// In en, this message translates to:
+  /// **'Time is up.'**
+  String get tempoTerminado;
+
+  /// No description provided for @desligar.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off'**
+  String get desligar;
+
+  /// No description provided for @reiniciar.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get reiniciar;
+
+  /// No description provided for @horas.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get horas;
+
+  /// No description provided for @min.
+  ///
+  /// In en, this message translates to:
+  /// **'Min'**
+  String get min;
+
+  /// No description provided for @seg.
+  ///
+  /// In en, this message translates to:
+  /// **'Sec'**
+  String get seg;
+
+  /// No description provided for @iniciar.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get iniciar;
+
+  /// No description provided for @tempoMaiorZero.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a time greater than zero'**
+  String get tempoMaiorZero;
+
+  /// No description provided for @editarAlarme.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Alarm'**
+  String get editarAlarme;
+
+  /// No description provided for @horario.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get horario;
 }
 
 class _AppLocalizationsDelegate

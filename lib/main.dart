@@ -24,8 +24,9 @@ class AppRoot extends StatefulWidget {
 }
 
 class _AppRootState extends State<AppRoot> {
-  Locale _locale = const Locale('pt'); // Idioma padrão
+  Locale _locale = const Locale('pt'); // Idioma padrão: português
 
+  /// Atualiza o idioma e reconstrói o app
   void _atualizarIdioma(Locale novoIdioma) {
     setState(() {
       _locale = novoIdioma;
@@ -50,9 +51,16 @@ class _AppRootState extends State<AppRoot> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          home: AppWidget(),
-         
-          
+          // ✅ Passamos os dados para AppWidget (sem MaterialApp dentro dele!)
+          home: AppWidget(
+            locale: _locale,
+            temaAtual: themeProvider.temaAtual,
+            onIdiomaMudado: _atualizarIdioma,
+            onTemaMudado: (novoTema) {
+              themeProvider.mudarTema(novoTema);
+            },
+          ),
+          debugShowCheckedModeBanner: false,
         );
       },
     );

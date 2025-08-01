@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:relogio_flutter/l10n/app_localizations.dart';
 
 class TimerCountdownScreen extends StatefulWidget {
   final int hours;
@@ -88,7 +89,6 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
     }
   }
 
-  /// 🔁 Método reutilizável para parar som, cancelar timer e voltar
   Future<void> _cancelarETerminar() async {
     _timer?.cancel();
     await _stopSound();
@@ -103,14 +103,16 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
   }
 
   void _showTimerFinishedDialog() {
+    final t = AppLocalizations.of(context)!;
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => WillPopScope(
         onWillPop: () async => false,
         child: AlertDialog(
-          title: const Text('Timer finalizado!'),
-          content: const Text('O tempo terminou.'),
+          title: Text(t.timerFinalizado),
+          content: Text(t.tempoTerminado),
           actions: [
             TextButton(
               onPressed: () async {
@@ -118,7 +120,7 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
                 await Future.delayed(const Duration(milliseconds: 300));
                 await _cancelarETerminar(); // Simula "Cancelar"
               },
-              child: const Text('Desligar'),
+              child: Text(t.desligar),
             ),
             TextButton(
               onPressed: () {
@@ -132,7 +134,7 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
                 });
                 _startTimer();
               },
-              child: const Text('Reiniciar'),
+              child: Text(t.reiniciar),
             ),
           ],
         ),
@@ -150,6 +152,8 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     final totalSeconds =
         widget.hours * 3600 + widget.minutes * 60 + widget.seconds;
     final progress = totalSeconds > 0
@@ -161,7 +165,7 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Timer'),
+        title: Text(t.timer),
         backgroundColor: Colors.black,
       ),
       body: SafeArea(
@@ -171,7 +175,7 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Tempo escolhido: ${_formatDuration(Duration(
+                '${t.tempoEscolhido}: ${_formatDuration(Duration(
                   hours: widget.hours,
                   minutes: widget.minutes,
                   seconds: widget.seconds,
@@ -211,7 +215,7 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
               ),
               const SizedBox(height: 20),
               Text(
-                'Hora provável do término: ${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}',
+                '${t.horaProvavelTermino}: ${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}',
                 style: const TextStyle(color: Colors.white54, fontSize: 16),
               ),
               const SizedBox(height: 48),
@@ -231,7 +235,7 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
                       ),
                     ),
                     child: Text(
-                      _isRunning ? 'Pausar' : 'Continuar',
+                      _isRunning ? t.pausar : t.continuar,
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -246,9 +250,9 @@ class _TimerCountdownScreenState extends State<TimerCountdownScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
-                      'Cancelar',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    child: Text(
+                      t.cancelar,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
